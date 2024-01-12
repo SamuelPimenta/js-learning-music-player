@@ -6,23 +6,33 @@ const musicContainer = document.getElementById("music-container");
 const prevButton = document.getElementById("prev");
 const nextButton = document.getElementById("next");
 const cover = document.getElementById("cover");
+const progress = document.getElementById("progress");
+
+const changePlayIcon = () => {
+  playButton.querySelector("i.fas").classList.toggle("fa-play");
+  playButton.querySelector("i.fas").classList.toggle("fa-pause");
+};
 
 const playTrack = () => {
   if (playButton.dataset.playing === "false") {
     audioElement.play();
+    changePlayIcon();
     playButton.dataset.playing = "true";
   } else if (playButton.dataset.playing === "true") {
     audioElement.pause();
+    changePlayIcon();
     playButton.dataset.playing = "false";
   }
   musicContainer.classList.toggle("play");
 };
 
-const changeSrcAndPlay = () => {
+const changeSrc = () => {
   audioElement.src = `music/${songs[currentSongIndex]}.mp3`;
   cover.src = `images/${songs[currentSongIndex]}.jpg`;
-
   audioElement.play();
+  playButton.querySelector("i.fas").classList.remove("fa-play");
+  playButton.querySelector("i.fas").classList.add("fa-pause");
+  musicContainer.classList.add("play");
   playButton.dataset.playing = "true";
 };
 
@@ -36,6 +46,13 @@ const playNextTrack = () => {
   changeSrcAndPlay();
 };
 
+const updateProgressBar = (e) => {
+  const { duration, currentTime } = e.srcElement;
+  const percentagePlayed = (currentTime / duration) * 100;
+  progress.style.width = `${percentagePlayed}%`;
+};
+
 playButton.addEventListener("click", playTrack);
 prevButton.addEventListener("click", playPrevTrack);
 nextButton.addEventListener("click", playNextTrack);
+audioElement.addEventListener("timeupdate", updateProgressBar);
