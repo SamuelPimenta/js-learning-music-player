@@ -26,7 +26,7 @@ const playTrack = () => {
   musicContainer.classList.toggle("play");
 };
 
-const changeSrc = () => {
+const changeSrcAndPlay = () => {
   audioElement.src = `music/${songs[currentSongIndex]}.mp3`;
   cover.src = `images/${songs[currentSongIndex]}.jpg`;
   audioElement.play();
