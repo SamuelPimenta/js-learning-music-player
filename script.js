@@ -7,6 +7,7 @@ const prevButton = document.getElementById("prev");
 const nextButton = document.getElementById("next");
 const cover = document.getElementById("cover");
 const progress = document.getElementById("progress");
+const progressContainer = document.getElementById("progress-container");
 
 const changePlayIcon = () => {
   playButton.querySelector("i.fas").classList.toggle("fa-play");
@@ -52,7 +53,15 @@ const updateProgressBar = (e) => {
   progress.style.width = `${percentagePlayed}%`;
 };
 
+function setProgress(e) {
+  const width = this.clientWidth;
+  const clickX = e.offsetX;
+  const duration = audioElement.duration;
+  audioElement.currentTime = (clickX / width) * duration;
+}
+
 playButton.addEventListener("click", playTrack);
 prevButton.addEventListener("click", playPrevTrack);
 nextButton.addEventListener("click", playNextTrack);
 audioElement.addEventListener("timeupdate", updateProgressBar);
+progressContainer.addEventListener("click", setProgress);
